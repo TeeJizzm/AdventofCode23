@@ -51,6 +51,7 @@ def firstDigit(line):
         if c.isdigit():
             return int(line[i])
         
+    # If nothing, assume Part 2 and return 0
     return 0
 
 def findFirstLastDigits(line):
