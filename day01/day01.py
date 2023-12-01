@@ -20,13 +20,25 @@ import tools.texttolists as tl
 ############################
 # Functions
 
+def firstDigit(line):
+    
+    for i, c in enumerate(line):
+        if c.isdigit():
+            return int(line[i])
+
+
 def day01(text):
-    print("Day 01 - *NAME*")
+    print("Day 01 - Trebuchet?!")
     
     part1, part2 = text, ''
     
-    
-    
+    lines = tl.toList(text)
+
+    part1 = 0
+
+    for line in lines:
+        part1 += (firstDigit(line)*10) + (firstDigit(line[::-1]))
+
     return part1, part2
 
 ############################
@@ -37,8 +49,8 @@ if __name__ == "__main__":
     
     # Change file
     #######
-    file = "ex.txt"
-    #file = "in.txt"
+    #file = "ex.txt"
+    file = "in.txt"
     #######
     
     # Get absolute filepath of file
