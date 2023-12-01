@@ -10,12 +10,37 @@
 
 import os
 
+import re
+
 import tools.texttolists as tl
 
 ############################
 # Variables
 
+PATTERN = r"(?=(1|2|3|4|5|6|7|8|9|0|zero|one|two|three|four|five|six|seven|eight|nine))"
 
+NUMS = {
+    'zero':0,
+    'one':1,
+    'two':2,
+    'three':3,
+    'four':4,
+    'five':5,
+    'six':6,
+    'seven':7,
+    'eight':8,
+    'nine':9,
+    '0':0,
+    '1':1,
+    '2':2,
+    '3':3,
+    '4':4,
+    '5':5,
+    '6':6,
+    '7':7,
+    '8':8,
+    '9':9
+}
 
 ############################
 # Functions
@@ -25,7 +50,16 @@ def firstDigit(line):
     for i, c in enumerate(line):
         if c.isdigit():
             return int(line[i])
+        
+    return 0
 
+def findFirstLastDigits(line):
+
+    matches = re.findall(PATTERN, line)
+
+    digits = NUMS.get(matches[0]), NUMS.get(matches[-1])
+
+    return digits
 
 def day01(text):
     print("Day 01 - Trebuchet?!")
@@ -34,10 +68,13 @@ def day01(text):
     
     lines = tl.toList(text)
 
-    part1 = 0
+    part1, part2 = 0, 0
 
     for line in lines:
         part1 += (firstDigit(line)*10) + (firstDigit(line[::-1]))
+        a, b = findFirstLastDigits(line)
+        part2 += (10*a + b)
+
 
     return part1, part2
 
@@ -49,7 +86,8 @@ if __name__ == "__main__":
     
     # Change file
     #######
-    #file = "ex.txt"
+    #file = "ex1.txt"
+    #file = "ex2.txt"
     file = "in.txt"
     #######
     
