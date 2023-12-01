@@ -12,6 +12,8 @@ As they're making the final adjustments, they discover that their calibration do
 
 The newly-improved calibration document consists of lines of text; each line originally contained a specific calibration value that the Elves now need to recover. On each line, the calibration value can be found by combining the first digit and the last digit (in that order) to form a single two-digit number.
 
+---
+
 ## Part 1
 
 ```example
@@ -25,7 +27,9 @@ In this example, the calibration values of these four lines are 12, 38, 15, and 
 
 Consider your entire calibration document. What is the sum of all of the calibration values?
 
-`54968`
+Answer: `54968`
+
+---
 
 ## Part 2
 
@@ -47,4 +51,4 @@ In this example, the calibration values are 29, 83, 13, 24, 42, 14, and 76. Addi
 
 What is the sum of all of the calibration values?
 
-`54094`
+Answer: `54094`
