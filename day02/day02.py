@@ -15,13 +15,15 @@ import tools.texttolists as tl
 ############################
 # Variables
 
-
+RED = 12
+GRN = 13
+BLU = 14
 
 ############################
 # Functions
 
 def day02(text):
-    print("Day 02 - *NAME*")
+    print("Day 02 - Cube Conundrum")
     
     part1, part2 = text, ''
     
