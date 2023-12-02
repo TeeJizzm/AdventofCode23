@@ -22,12 +22,31 @@ BLU = 14
 ############################
 # Functions
 
+def part_one (num, pulls):
+
+    print(num, pulls)
+
+
+    return int(num) # game num val or 0
+
+
 def day02(text):
     print("Day 02 - Cube Conundrum")
     
-    part1, part2 = text, ''
+    part1, part2 = 0, 0
     
-    
+    lines = tl.toList(text)
+
+    for game, reveal in tl.to2dLists(text, item=": "):
+
+        hands = tl.to2dLists(reveal, "; ", ", ")
+
+        str.replace(reveal, ";", ",")
+        pulls = tl.toList(reveal, ",")
+
+        #print(pulls)
+
+        part1 += part_one(game.split()[-1], pulls)
     
     return part1, part2
 
