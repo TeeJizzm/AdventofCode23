@@ -24,9 +24,16 @@ BLU = 14
 
 def part_one (num, pulls):
 
-    print(num, pulls)
-
-
+    for pull in pulls:
+        cnt, col = pull.split()
+        match col:
+            case "red": 
+                if int(cnt) > RED: return 0
+            case "blue":
+                if int(cnt) > BLU: return 0
+            case "green":
+                if int(cnt) > GRN: return 0
+        
     return int(num) # game num val or 0
 
 
@@ -41,8 +48,9 @@ def day02(text):
 
         hands = tl.to2dLists(reveal, "; ", ", ")
 
-        str.replace(reveal, ";", ",")
-        pulls = tl.toList(reveal, ",")
+        reveal = str.replace(reveal, "; ", ", ")
+        #print(reveal)
+        pulls = tl.toList(reveal, ", ")
 
         #print(pulls)
 
@@ -58,8 +66,8 @@ if __name__ == "__main__":
     
     # Change file
     #######
-    file = "ex.txt"
-    #file = "in.txt"
+    #file = "ex.txt"
+    file = "in.txt"
     #######
     
     # Get absolute filepath of file
