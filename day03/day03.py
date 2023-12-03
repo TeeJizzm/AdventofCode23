@@ -12,6 +12,8 @@ import os
 
 import tools.texttolists as tl
 
+import re
+
 ############################
 # Variables
 
@@ -33,8 +35,8 @@ def day03(text):
     
     part1, part2 = text, ''
     
-    
-    
+    rows = tl.toList(text)
+
     return part1, part2
 
 ############################
