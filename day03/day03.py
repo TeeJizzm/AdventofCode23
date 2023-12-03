@@ -20,8 +20,16 @@ import tools.texttolists as tl
 ############################
 # Functions
 
+def part_one():
+
+    return 0
+
+def part_two():
+
+    return 0
+
 def day03(text):
-    print("Day 03 - *NAME*")
+    print("Day 03 - Gear Ratios")
     
     part1, part2 = text, ''
     
