@@ -26,15 +26,37 @@ def part_one (num, pulls):
 
     for pull in pulls:
         cnt, col = pull.split()
+        cnt = int(cnt)
         match col:
             case "red": 
-                if int(cnt) > RED: return 0
+                if cnt > RED: return 0
             case "blue":
-                if int(cnt) > BLU: return 0
+                if cnt > BLU: return 0
             case "green":
-                if int(cnt) > GRN: return 0
+                if cnt > GRN: return 0
         
     return int(num) # game num val or 0
+
+def part_two (pulls):
+    power = 0
+    red_max, blu_max, grn_max = 0, 0, 0
+
+    for pull in pulls:
+        cnt, col = pull.split()
+        cnt = int(cnt)
+        match col:
+            case "red": 
+                if cnt > red_max: red_max = cnt
+            case "blue":
+                if cnt > blu_max: blu_max = cnt
+            case "green":
+                if cnt > grn_max: grn_max = cnt
+
+    print(red_max, blu_max, grn_max )
+    power = red_max * blu_max * grn_max 
+
+
+    return power
 
 
 def day02(text):
@@ -44,17 +66,16 @@ def day02(text):
     
     lines = tl.toList(text)
 
-    for game, reveal in tl.to2dLists(text, item=": "):
+    for gamenum, reveal in tl.to2dLists(text, item=": "):
 
-        hands = tl.to2dLists(reveal, "; ", ", ")
-
-        reveal = str.replace(reveal, "; ", ", ")
+        reveal = str.replace(reveal, "; ", ", ") # Don't care about each round
         #print(reveal)
         pulls = tl.toList(reveal, ", ")
-
         #print(pulls)
 
-        part1 += part_one(game.split()[-1], pulls)
+        part1 += part_one(gamenum.split()[-1], pulls)
+
+        part2 += part_two(pulls)
     
     return part1, part2
 
