@@ -1,6 +1,6 @@
 ############ GITIGNORE ###############
 
-in.txt
+**/in.txt
 
 # List of ignored files/folders from Github/gitignore
 
