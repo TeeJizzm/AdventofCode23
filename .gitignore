@@ -1,5 +1,7 @@
 ############ GITIGNORE ###############
 
+in.txt
+
 # List of ignored files/folders from Github/gitignore
 
 ## Go
