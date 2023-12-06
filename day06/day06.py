@@ -12,6 +12,10 @@ import os
 
 import tools.texttolists as tl
 
+import re
+import numpy as np
+import math
+
 ############################
 # Variables
 
@@ -20,12 +24,32 @@ import tools.texttolists as tl
 ############################
 # Functions
 
+def calc_beating_record(time, dist):
+
+    results = []
+    ## Quadratics
+    # y = (-1)x^2 + (t)x + 0 
+    # a = -1
+    # b = t
+    # c = -d
+    for t, d in zip(list(map(int, re.findall(r"\d+", time))), list(map(int, re.findall(r"\d+", dist)))):
+        
+        lower = (-t + math.sqrt(t**2 - 4*d)) / (-2)
+        upper = (-t - math.sqrt(t**2 - 4*d)) / (-2)
+
+        results.append(math.floor(upper-1e-7) - math.ceil(lower+1e-7) + 1)
+    return results
+
 def day06(text):
-    print("Day 06 - *NAME*")
+    print("Day 06 - Wait for it")
     
-    part1, part2 = text, ''
+    part1, part2 = 0, 0
     
-    
+    time, dist = tl.toList(text)
+    time = time.split(":")[-1]
+    dist = dist.split(":")[-1]
+    part1 = math.prod(calc_beating_record(time, dist))
+    part2 = math.prod(calc_beating_record(str.replace(time, " ", ""), str.replace(dist, " ", ""))) # Make the string a single number each
     
     return part1, part2
 
@@ -37,8 +61,8 @@ if __name__ == "__main__":
     
     # Change file
     #######
-    file = "ex.txt"
-    #file = "in.txt"
+    #file = "ex.txt"
+    file = "in.txt"
     #######
     
     # Get absolute filepath of file
