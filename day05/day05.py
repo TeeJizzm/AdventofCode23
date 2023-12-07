@@ -23,6 +23,9 @@ import numpy as np
 ############################
 # Functions
 
+def srs_to_drs(srs, drs, input):
+    return (drs + (input - srs))
+
 def pairwise(iterable):
     "s -> (s0, s1), (s2, s3), (s4, s5), ..."
     a = iter(iterable)
@@ -36,27 +39,41 @@ def part_one(seeds, mappings):
         current_num = seed
         for mapping in mappings:
             for drs, srs, lng in mapping:
-                if (current_num >= srs) & (current_num < (srs + lng)):
-                    current_num = drs + (current_num - srs)
+                if (current_num >= srs) and (current_num < (srs + lng)):
+                    current_num = srs_to_drs(srs, drs, current_num)
                     break
         location.append(current_num)
 
 
     return min(location)
 
-def part_two(seeds, mappings):
+def part_two(seeds, almanac):
 
-    location = []
+    location = [0]
 
     for seed, length in pairwise(seeds):
-        print(seed, length)
-        curr_start, curr_len = seed, length
-        for mapping in mappings:
+        print("Seed, length: ", seed, length)
+        curr_set = set(range(seed, seed + length))
+        for mapping in almanac:
+            next_set = set(())
             for drs, srs, lng in mapping:
                 # If an intersection of (curr_start -> + curr_len) and (srs + lng)
                 # max of lower bound, min of upper bound
-                pass
-        location.append(curr_start)
+                if sect_set := curr_set.intersection(range(srs, srs + lng)):
+                    print(drs, srs, lng, sect_set)
+                    next_set.update(map(lambda num: srs_to_drs(srs, drs, num), sect_set))
+                    print(">", next_set)
+                
+                            
+                
+            if len(next_set) > 0:
+                curr_set = next_set
+                print(curr_set)
+            else:
+                curr_set = [0]
+                print("!!!!")
+                break
+        #location.append(curr_start)
 
     return min(location)
 
