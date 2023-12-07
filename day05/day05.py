@@ -23,8 +23,8 @@ import numpy as np
 ############################
 # Functions
 
-def srs_to_drs(srs, drs, input):
-    return (drs + (input - srs))
+def srs_to_drs(srs, drs, val):
+    return (drs + (val - srs))
 
 def pairwise(iterable):
     "s -> (s0, s1), (s2, s3), (s4, s5), ..."
@@ -49,33 +49,28 @@ def part_one(seeds, mappings):
 
 def part_two(seeds, almanac):
 
-    location = [0]
-
-    for seed, length in pairwise(seeds):
-        print("Seed, length: ", seed, length)
-        curr_set = set(range(seed, seed + length))
+    minimum = []
+    for start, length in pairwise(seeds):
+        #print("Seed, length: ", start, length)
+        curr_set = set(range(start, start + length))
         for mapping in almanac:
-            next_set = set(())
+            next_set = set()
+            sect_set = set()
             for drs, srs, lng in mapping:
                 # If an intersection of (curr_start -> + curr_len) and (srs + lng)
                 # max of lower bound, min of upper bound
-                if sect_set := curr_set.intersection(range(srs, srs + lng)):
-                    print(drs, srs, lng, sect_set)
-                    next_set.update(map(lambda num: srs_to_drs(srs, drs, num), sect_set))
-                    print(">", next_set)
-                
-                            
-                
-            if len(next_set) > 0:
-                curr_set = next_set
-                print(curr_set)
-            else:
-                curr_set = [0]
-                print("!!!!")
-                break
-        #location.append(curr_start)
 
-    return min(location)
+                if intersect := set.intersection(curr_set, range(srs, srs+lng)):
+                    sect_set.update(intersect)
+                    #print(sect_set)
+                    next_set.update(map(lambda val: srs_to_drs(srs, drs, val), intersect))
+                
+            next_set.update(curr_set - sect_set)
+            #print(">",next_set)
+            curr_set = set(sorted(next_set))
+
+        minimum.append(min(curr_set))
+    return min(minimum)
 
 def day05(text):
     print("Day 05 - If You Give A Seed A Fertilizer")
@@ -102,8 +97,8 @@ if __name__ == "__main__":
     
     # Change file
     #######
-    file = "ex.txt"
-    #file = "in.txt"
+    #file = "ex.txt"
+    file = "in.txt"
     #######
     
     # Get absolute filepath of file
