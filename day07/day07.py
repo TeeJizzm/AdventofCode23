@@ -12,6 +12,8 @@ import os
 
 import tools.texttolists as tl
 
+from statistics import mode
+
 ############################
 # Variables
 
@@ -23,17 +25,27 @@ CARDS = {"A": 14, "K": 13,
          "4": 4, "3": 3,
          "2": 2, "1": 1}
 
+CARDS2 = {"A": 14, "K": 13,
+         "Q": 12, "T": 10, 
+         "9": 9, "8": 8, 
+         "7": 7, "6": 6, 
+         "5": 5, "4": 4, 
+         "3": 3, "2": 2, 
+         "1": 1, "J": 0,}
+
 class player:
     def __init__(self, cards, bet) -> None:
         self.cards = cards
         self.bet = int(bet)
-        self.hand_score = hand_score(cards)
         self.cardvals = [CARDS[card[0]] for card in cards]
+        self.cardvals2 = [CARDS2[card[0]] for card in self.cards]
+        self.hand_score = hand_score(cards)
+        self.hand_score2 = hand_score2(cards)
 
 ############################
 # Functions
 
-def hand_score(cards):
+def hand_score(cards) -> int:
 
     match len({*cards}):
         case 1: # 5 of a kind
@@ -58,13 +70,20 @@ def hand_score(cards):
         case 5: # No matches, card high
             return 0
 
-def part_one(plays) -> int:
+def hand_score2(cards) -> int:
 
-    total = 0
+    cards_jokerless = str.replace(cards, "J", "")
+
+    if cards_jokerless:
+        cards_jk = str.replace(cards, "J", mode(cards_jokerless))
+        return hand_score(cards_jk)
+    else:
+        return hand_score(cards)
+
+def scoring(plays) -> (int, int):
+
+    part1, part2 = 0, 0
     players = [player(cards, bet) for cards, bet in plays]
-
-    for p in players:
-        print(p.cards, p.hand_score)
 
     # Sort players based on hand score first, then card value in order
     players.sort(key=lambda hand: (hand.hand_score, hand.cardvals[0], 
@@ -72,18 +91,26 @@ def part_one(plays) -> int:
                                    hand.cardvals[3], hand.cardvals[4]))
     
     for i, p in enumerate(players):
-        total += (i+1) * p.bet
-    return total
+        part1 += (i+1) * p.bet
+
+    # Sort players based on hand score first, then card value in order
+    players.sort(key=lambda hand: (hand.hand_score2, hand.cardvals2[0], 
+                                   hand.cardvals2[1], hand.cardvals2[2], 
+                                   hand.cardvals2[3], hand.cardvals2[4]))
+
+    
+    for i, p in enumerate(players):
+        part2 += (i+1) * p.bet
+
+    return part1, part2
 
 
 def day07(text):
     print("Day 07 - Camel Cards")
     
-    part1, part2 = text, ''
-    
     plays = tl.to2dLists(text, "\n", " ")
         
-    part1 = part_one(plays)
+    part1, part2 = scoring(plays)
 
     return part1, part2
 
