@@ -25,11 +25,12 @@ import re
 ############################
 # Functions
 
-def steps_to_xxZ(instructions, df, start):
+def steps_to_match(instructions, df, start, match):
     
-    curr_pos = start
+    if start in df.index:
+        curr_pos = start
     for i, instr in enumerate(cycle(instructions)):
-        if curr_pos[2] == "Z":
+        if re.match(match, curr_pos):
             return i
         curr_pos = df.at[curr_pos, instr]
 
@@ -40,21 +41,9 @@ def part_two(instructions, df):
 
     for start in df.index[mask].tolist():
         #print(start)
-        steps.append(steps_to_xxZ(instructions, df, start))
+        steps.append(steps_to_match(instructions, df, start, r"\w\wZ"))
 
-
-    print(np.lcm.reduce(steps))
-
-def part_one(instructions, df) -> int:
-
-    curr_pos = "AAA"
-    end_pos = "ZZZ"
-    for i, instr in enumerate(cycle(instructions)):
-        if curr_pos == end_pos:
-            return i
-        curr_pos = df.at[curr_pos, instr]
-
-    return -1
+    return np.lcm.reduce(steps)
 
 def day08(text):
     print("Day 08 - Haunted Wasteland")
@@ -67,7 +56,7 @@ def day08(text):
                       columns=["pos", "L", "R"])
     df.set_index("pos", inplace=True)
 
-    #part1 = part_one(instructions[0], df)
+    part1 = steps_to_match(instructions[0], df, "AAA", "ZZZ")
     part2 = part_two(instructions[0], df)
 
     return part1, part2
