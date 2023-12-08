@@ -21,7 +21,7 @@ import tools.texttolists as tl
 # Functions
 
 def day08(text):
-    print("Day 08 - *NAME*")
+    print("Day 08 - Haunted Wasteland")
     
     part1, part2 = text, ''
     
