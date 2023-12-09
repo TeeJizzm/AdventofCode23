@@ -24,22 +24,63 @@ class num:
         self.col_s = int(col)
         self.col_e = self.col_s + len(str(self.val))
 
-class symbol:
-    def __init__(self, sym, row, col) -> None:
+class gear:
+    def __init__(self, sym, row, col, grid) -> None:
         self.sym = sym
         self.row = int(row)
         self.col = int(col)
+        self.adj = count_adj_nums(grid, self)
+    
+    def get_ratio(self, nums):
 
+        ratio = 1
+        for no in nums:
+            if (self.row >= no.row-1 and
+                self.row < no.row+2 and
+                self.col >= no.col_s-1 and
+                self.col < no.col_e+1):
+                ratio *= no.val
+        return ratio
+    
 ############################
 # Functions
 
-def part_one():
+def part_one(grid, nums):
 
-    return 0
+    total = 0
+    for num in nums:
+        total += num.val if is_sym_adj(grid, num) else 0
+    return total
 
-def part_two():
+def is_sym_adj(grid, num) -> bool:
 
-    return 0
+    for row in grid[num.row-1 : num.row+2]:
+        for col in row[num.col_s-1 : num.col_e+2]:
+            #print(col, end="")
+            if re.match(r"[^\d\s\.a-zA-Z]", col):
+                #print()
+                return True
+    return False
+
+def part_two(grid, gears, nums):
+
+    ratios = 0
+    for gear in gears:
+        if gear.adj == 2:
+            ratios += gear.get_ratio(nums)
+    
+    return ratios
+
+def count_adj_nums(grid, gear) -> int:
+
+    count = 0
+    for row in grid[gear.row-1 : gear.row+2]:
+        #print(row[gear.col-1:gear.col+2])
+        for m in re.findall(r"\d+", row[gear.col-1:gear.col+2]):
+            count += 1
+    #print("Adj count:", count)         
+
+    return count
 
 def pad_input(grid, padding="."):
     
@@ -49,22 +90,25 @@ def pad_input(grid, padding="."):
 
     return padded_grid
 
-
-
 def day03(text):
     print("Day 03 - Gear Ratios")
     
     part1, part2 = text, ''
     
-    rows = pad_input(tl.toList(text))
+    grid = pad_input(tl.toList(text))
     
-    print(rows)
-    nums =[]
+    #print(grid)
+    nums = []
+    gears = []
 
-    for row_num, row in enumerate(rows):
+    for row_num, row in enumerate(grid):
         for m in re.finditer(r"\d+", row):
-            nums.append(num(int(m.group[0]), row_num, m.start(0)))
+            nums.append(num(int(m.group(0)), row_num, m.start(0)))
+        for m in re.finditer(r"\*", row):
+            gears.append(gear(m.group(0), row_num, m.start(0), grid))
         
+    part1 = part_one(grid, nums)
+    part2 = part_two(grid, gears, nums)
 
     return part1, part2
 
@@ -77,7 +121,7 @@ if __name__ == "__main__":
     # Change file
     #######
     file = "ex.txt"
-    #file = "in.txt"
+    file = "in.txt"
     #######
     
     # Get absolute filepath of file
