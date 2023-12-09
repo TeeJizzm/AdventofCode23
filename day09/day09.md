@@ -84,4 +84,4 @@ Doing this for the remaining example data above results in previous values of -3
 
 Analyze your OASIS report again, this time extrapolating the previous value for each history. What is the sum of these extrapolated values?
 
-Answer: ``
+Answer: `1087`

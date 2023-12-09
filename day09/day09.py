@@ -21,22 +21,25 @@ import numpy as np
 # Functions
 
 def get_next_in_set(seq):
+    #print(seq)
     if any(seq) == 0:
         return 0
 
     return (seq[-1] + get_next_in_set(np.diff(seq)))
 
-def part_one(sequences):
-
-    return sum([get_next_in_set(seq) for seq in sequences])
-
 def day09(text):
     print("Day 09 - Mirage Maintenance")
     
+    part1, part2 = 0, 0
+
     sequences = [list(map(int, line.split(" "))) for line in text.split("\n")]
 
-    part1 = part_one(sequences)
-    part2 = 0
+    for seq in sequences:
+
+        part1 += get_next_in_set(seq)
+        seq.reverse()
+        part2 += get_next_in_set(seq)
+
     return part1, part2
 
 ############################
