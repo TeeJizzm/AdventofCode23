@@ -10,7 +10,7 @@
 
 import os
 
-import tools.texttolists as tl
+import numpy as np
 
 ############################
 # Variables
@@ -20,13 +20,23 @@ import tools.texttolists as tl
 ############################
 # Functions
 
+def get_next_in_set(seq):
+    if any(seq) == 0:
+        return 0
+
+    return (seq[-1] + get_next_in_set(np.diff(seq)))
+
+def part_one(sequences):
+
+    return sum([get_next_in_set(seq) for seq in sequences])
+
 def day09(text):
-    print("Day 09 - *NAME*")
+    print("Day 09 - Mirage Maintenance")
     
-    part1, part2 = text, ''
-    
-    
-    
+    sequences = [list(map(int, line.split(" "))) for line in text.split("\n")]
+
+    part1 = part_one(sequences)
+    part2 = 0
     return part1, part2
 
 ############################
@@ -37,8 +47,8 @@ if __name__ == "__main__":
     
     # Change file
     #######
-    file = "ex.txt"
-    #file = "in.txt"
+    #file = "ex.txt"
+    file = "in.txt"
     #######
     
     # Get absolute filepath of file
